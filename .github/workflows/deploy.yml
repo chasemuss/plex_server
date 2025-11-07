@@ -47,6 +47,8 @@ jobs:
         id: plan
         run: |
           cd terraform
+          echo ${{ secrets.AWS_ACCESS_KEY }}
+          echo ${{ secrets.AWS_SECRET_KEY }}
           terraform plan -out=plan.tfout \
             -var="region=${{ vars.AWS_REGION }}" \
             -var="instance_type=${{ vars.EC2_INSTANCE_TYPE }}" \
