@@ -7,7 +7,7 @@ terraform {
     bucket         = "chasemuss-plex"
     key            = "terraform/plex-server/state.tfstate"
     region         = "us-east-1"
-    dynamodb_table = "terraform-locks-plex"  # Optional: create if needed for locking
+    use_lockfile   = true # "terraform-locks-plex"  # Optional: create if needed for locking
     encrypt        = true
   }
 } 
