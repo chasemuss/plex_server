@@ -46,7 +46,7 @@ jobs:
           terraform plan -out=plan.tfout \
             -var="region=${{ vars.AWS_REGION }}" \
             -var="instance_type=${{ vars.EC2_INSTANCE_TYPE }}" \
-            -var="allowed_ips=${{ vars.ALLOWED_IPS_CSV }}" \
+            # -var="allowed_ips=${{ vars.ALLOWED_IPS_CSV }}" \
             -var="aws_access_key=${{ secrets.AWS_ACCESS_KEY}}" \
             -var="aws_secret_key=${{ secrets.AWS_SECRET_KEY}}"
 

@@ -38,11 +38,11 @@ variable "plex_media_path" {
   default     = "~/media"
 }
 
-variable "allowed_ips" {
-  description = "List of CIDR blocks allowed to access Plex (your households)"
-  type        = list(string)
-  default     = [] # Populate in tfvars
-}
+# variable "allowed_ips" {
+#   description = "List of CIDR blocks allowed to access Plex (your households)"
+#   type        = list(string)
+#   default     = [] # Populate in tfvars
+# }
 
 variable "plex_claim_token" {
   description = "Plex claim token from https://plex.tv/claim"
