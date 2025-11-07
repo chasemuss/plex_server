@@ -23,6 +23,7 @@ jobs:
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+      AWS_DEFAULT_REGION: ${{ vars.AWS_REGION }}
 
     steps:
       - name: Checkout
@@ -48,7 +49,6 @@ jobs:
         run: |
           cd terraform
           terraform plan -out=plan.tfout \
-            -var="region=${{ vars.AWS_REGION }}" \
             -var="instance_type=${{ vars.EC2_INSTANCE_TYPE }}" \
 
       - name: Comment Plan on PR
