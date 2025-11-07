@@ -20,6 +20,10 @@ jobs:
       id-token: write
       pull-requests: write
 
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -43,17 +47,9 @@ jobs:
         id: plan
         run: |
           cd terraform
-
-          echo ${{ vars.AWS_REGION }}
-          echo ${{ vars.EC2_INSTANCE_TYPE }}
-          echo ${{ vars.ALLOWED_IPS_CSV }}
-
           terraform plan -out=plan.tfout \
             -var="region=${{ vars.AWS_REGION }}" \
             -var="instance_type=${{ vars.EC2_INSTANCE_TYPE }}" \
-            # -var="allowed_ips=${{ vars.ALLOWED_IPS_CSV }}" \
-            -var="aws_access_key=${{ secrets.AWS_ACCESS_KEY}}" \
-            -var="aws_secret_key=${{ secrets.AWS_SECRET_KEY}}"
 
       - name: Comment Plan on PR
         if: github.event_name == 'pull_request'
