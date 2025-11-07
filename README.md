@@ -1,6 +1,7 @@
 # plex_server
 IaC and associated code for my Plex Server
 
+```tree
 plex-aws/
 ├── terraform/
 │   ├── main.tf
@@ -18,3 +19,4 @@ plex-aws/
 │   └── deploy.yml
 ├── README.md
 └── terraform.tfvars.example
+```
