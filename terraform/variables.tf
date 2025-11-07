@@ -43,3 +43,10 @@ variable "allowed_ips" {
   type        = list(string)
   default     = [] # Populate in tfvars
 }
+
+variable "plex_claim_token" {
+  description = "Plex claim token from https://plex.tv/claim"
+  type        = string
+  default     = ""
+  sensitive   = true
+}

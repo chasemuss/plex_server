@@ -43,8 +43,9 @@ resource "aws_instance" "plex" {
 
   # In ec2.tf user_data:
   user_data = base64encode(templatefile("${path.module}/user_data.sh", {
-    s3_bucket    = aws_s3_bucket.plex.id
-    aws_region   = var.region
+    s3_bucket        = aws_s3_bucket.plex.id
+    aws_region       = var.region
+    plex_claim_token = var.plex_claim_token
   }))
 
   tags = merge(var.global_tags, {
