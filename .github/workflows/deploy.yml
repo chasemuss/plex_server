@@ -43,6 +43,11 @@ jobs:
         id: plan
         run: |
           cd terraform
+
+          echo ${{ vars.AWS_REGION }}
+          echo ${{ vars.EC2_INSTANCE_TYPE }}
+          echo ${{ vars.ALLOWED_IPS_CSV }}
+
           terraform plan -out=plan.tfout \
             -var="region=${{ vars.AWS_REGION }}" \
             -var="instance_type=${{ vars.EC2_INSTANCE_TYPE }}" \
