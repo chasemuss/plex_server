@@ -2,7 +2,7 @@
 # Create the central S3 bucket for media, scripts, and logs
 resource "aws_s3_bucket" "plex" {
   bucket = local.s3_bucket # "chasemuss-plex"
-
+  region = var.region
   # Prevent accidental deletion
   force_destroy = false
 }
