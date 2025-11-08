@@ -22,17 +22,17 @@ resource "aws_security_group" "plex" {
     from_port   = 32400
     to_port     = 32400
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["99.23.32.185/32"]
   }
 
   # SSH for setup (restrict!)
-  # ingress {
-  #   description = "SSH"
-  #   from_port   = 22
-  #   to_port     = 22
-  #   protocol    = "tcp"
-  #   cidr_blocks = var.allowed_ips
-  # }
+  ingress {
+    description = "SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["99.23.32.185/32"]
+  }
 
   egress {
     from_port   = 0
