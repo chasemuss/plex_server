@@ -45,4 +45,4 @@ jobs:
 
       - name: Terraform Destroy
         working-directory: terraform
-        run: terraform destroy -auto-approve plan.tfout
+        run: terraform destroy -auto-approve
