@@ -1,10 +1,12 @@
 # eip.tf
 resource "aws_eip" "plex_eip" {
-  instance = aws_instance.plex_instance.id  # Replace with your EC2 resource name if different
+  instance = aws_instance.plex.id  # Replace with your EC2 resource name if different
   domain   = "vpc"
-  tags = {
+
+  tags = merge(var.global_tags, {
     Name = "plex-static-ip"
-  }
+  })
+
 }
 
 output "plex_eip" {
