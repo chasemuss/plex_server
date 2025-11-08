@@ -84,6 +84,13 @@ resource "aws_s3_object" "claim_script" {
   tags = var.global_tags
 }
 
+resource "aws_s3_object" "validate_script" {
+  bucket = aws_s3_bucket.plex_bucket.bucket
+  key    = "scripts/validate.sh"
+  source = "${path.module}/scripts/validate.sh"
+  etag   = filemd5("${path.module}/scripts/validate.sh")
+}
+
 resource "aws_s3_object" "logs_folder" {
   bucket       = aws_s3_bucket.plex.id
   key          = "logs/"
