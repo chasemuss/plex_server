@@ -28,15 +28,12 @@ jobs:
       - name: Terraform Init & Plan
         working-directory: terraform
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: us-east-2
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            AWS_DEFAULT_REGION: us-east-2
         run: |
-          terraform init
-          terraform plan -out=plan.tfout \
-            -var="aws_access_key=$AWS_ACCESS_KEY_ID" \
-            -var="aws_secret_key=$AWS_SECRET_ACCESS_KEY" \
-            -var="region=us-east-2"
+            terraform init
+            terraform plan -out=plan.tfout
 
       - name: Terraform Apply
         working-directory: terraform
