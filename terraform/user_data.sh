@@ -23,6 +23,6 @@ mkdir /media
 s3fs chasemuss-plex:/media /media -o iam_role=auto -o allow_other -o use_cache=/tmp -o uid=$(id -u plex) -o gid=$(id -g plex) -o umask=0022
 
 # Copy claim script from S3.
-aws s3 cp s3://chasemuss-plex/set_up_scripts/claim.sh /home/ubuntu/claim.sh
+aws s3 cp s3://chasemuss-plex/scripts/claim.sh /home/ubuntu/claim.sh
 chmod +x /home/ubuntu/claim.sh
 chown ubuntu:ubuntu /home/ubuntu/claim.sh
