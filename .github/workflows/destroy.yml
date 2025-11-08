@@ -1,0 +1,48 @@
+# .github/workflows/deploy.yml
+name: Destroy Plex Server
+
+on:
+  push:
+    branches: [ destroy ]
+  pull_request:
+    branches: [ destroy ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: terraform-destroy
+  cancel-in-progress: false
+
+jobs:
+  terraform:
+    name: Terraform destroy
+    runs-on: ubuntu-latest
+    env:  # define once for the whole job
+      AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+      AWS_DEFAULT_REGION: us-east-2
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.0
+
+      - name: Terraform Init & Plan
+        working-directory: terraform
+        run: |
+          terraform init
+          terraform plan -out=plan.tfout
+
+      - name: Terraform Destroy
+        working-directory: terraform
+        run: terraform destroy -auto-approve plan.tfout
