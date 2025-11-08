@@ -85,7 +85,7 @@ resource "aws_s3_object" "claim_script" {
 }
 
 resource "aws_s3_object" "validate_script" {
-  bucket = aws_s3_bucket.plex_bucket.bucket
+  bucket = aws_s3_bucket.plex.bucket
   key    = "scripts/validate.sh"
   source = "${path.module}/scripts/validate.sh"
   etag   = filemd5("${path.module}/scripts/validate.sh")
