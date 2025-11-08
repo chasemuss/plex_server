@@ -42,7 +42,7 @@ resource "aws_instance" "plex" {
   }
 
   # In ec2.tf user_data:
-  # user_data = file("${path.module}/user_data.sh")
+  user_data = file("${path.module}/user_data.sh")
 
   tags = merge(var.global_tags, {
     Name = "${local.name_prefix}-server"
