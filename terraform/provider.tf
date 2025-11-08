@@ -3,7 +3,7 @@ terraform {
   required_version = ">= 1.5.0"
 
   backend "s3" {
-    bucket         = "chase-mussleman"  # replace with your S3 bucket
+    bucket         = "chasemuss-west-2"  # replace with your S3 bucket
     key            = "terraform.tfstate"
     region         = "us-west-2"
     dynamodb_table = "plex-server-locks"            # replace with your DynamoDB table
