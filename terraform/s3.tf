@@ -77,6 +77,13 @@ resource "aws_s3_object" "scripts_folder" {
   etag         = md5("scripts-folder")
 }
 
+resource "aws_s3_object" "claim_script" {
+  bucket = aws_s3_bucket.plex.id
+  key    = "scripts/claim.sh"
+  source = "${path.module}/claim.sh"
+  tags = var.global_tags
+}
+
 resource "aws_s3_object" "logs_folder" {
   bucket       = aws_s3_bucket.plex.id
   key          = "logs/"

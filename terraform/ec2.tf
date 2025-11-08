@@ -31,7 +31,7 @@ resource "aws_instance" "plex" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
   subnet_id     = data.aws_subnets.default.ids[0]
-
+  key_name      = "plex-server"
   vpc_security_group_ids      = [aws_security_group.plex.id]
   associate_public_ip_address = true
   iam_instance_profile        = aws_iam_instance_profile.plex.name  # Added
@@ -42,11 +42,7 @@ resource "aws_instance" "plex" {
   }
 
   # In ec2.tf user_data:
-  user_data_base64   = base64encode(templatefile("${path.module}/user_data.sh", {
-    s3_bucket        = aws_s3_bucket.plex.id
-    aws_region       = var.region
-    plex_claim_token = var.plex_claim_token
-  }))
+  user_data = file("${path.module}/user_data.sh")
 
   tags = merge(var.global_tags, {
     Name = "${local.name_prefix}-server"

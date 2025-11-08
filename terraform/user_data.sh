@@ -1,37 +1,28 @@
 #!/bin/bash
-set -e
+# User data script for auto-setup (excluding claim).
+# Justification: Automates base install and S3 mount for reliability. Claim moved to manual script to resolve boot issues.
 
-S3_BUCKET="${s3_bucket}"
-AWS_REGION="${aws_region}"
-DEVICE="/dev/nvme1n1"
-MOUNT="/mnt/plex-media"
-PLEX_CLAIM_TOKEN="${plex_claim_token}"  # Passed from Terraform
+apt update -y
+apt install -y curl apt-transport-https fuse awscli
 
-if ! grep -qs "$MOUNT" /proc/mounts; then
-  mkfs.ext4 $DEVICE
-  mkdir -p $MOUNT
-  mount $DEVICE $MOUNT
-  echo "$DEVICE $MOUNT ext4 defaults,nofail 0 2" >> /etc/fstab
-fi
+# Install Plex.
+curl https://downloads.plex.tv/plex-keys/PlexSign.key | apt-key add -
+echo "deb https://downloads.plex.tv/repo/deb public main" | tee /etc/apt/sources.list.d/plexmediaserver.list
+apt update -y
+apt install -y plexmediaserver
 
-# Install Plex
-curl https://downloads.plex.tv/plex-keys/PlexSign.key | gpg --dearmor | tee /etc/apt/trusted.gpg.d/plex.gpg >/dev/null
-echo "deb https://downloads.plex.tv/repo/deb public main" > /etc/apt/sources.list.d/plexmediaserver.list
-apt update && apt install -y plexmediaserver
-
-# Auto-claim server
-if [ -n "$PLEX_CLAIM_TOKEN" ]; then
-  mkdir -p /var/lib/plexmediaserver/Library/Application\ Support/Plex\ Media\ Server/
-  echo "PlexClaimToken=$PLEX_CLAIM_TOKEN" > /var/lib/plexmediaserver/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
-  chown -R plex:plex /var/lib/plexmediaserver/
-fi
-
-# Set media library path
-sed -i 's|/var/lib/plexmediaserver/Library/Application Support/Plex Media Server/|/mnt/plex-media|' /etc/default/plexmediaserver
-
-# Sync media from S3 on boot
-aws s3 sync s3://$S3_BUCKET/media/ $MOUNT/ --region $AWS_REGION || echo "Initial sync failed or no media"
-
-# Start Plex
+# Enable and start Plex.
 systemctl enable plexmediaserver
 systemctl start plexmediaserver
+
+# Install s3fs.
+apt install -y s3fs
+
+# Mount S3 with prefix for media.
+mkdir /media
+s3fs chasemuss-plex:/media /media -o iam_role=auto -o allow_other -o use_cache=/tmp -o uid=$(id -u plex) -o gid=$(id -g plex) -o umask=0022
+
+# Copy claim script from S3.
+aws s3 cp s3://chasemuss-plex/set_up_scripts/claim.sh /home/ubuntu/claim.sh
+chmod +x /home/ubuntu/claim.sh
+chown ubuntu:ubuntu /home/ubuntu/claim.sh
