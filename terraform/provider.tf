@@ -2,17 +2,18 @@
 terraform {
   required_version = ">= 1.5.0"
 
-  # State stored locally as requested
-  backend "local" {
-    path = "../terraform.tfstate"
+  backend "s3" {
+    bucket         = "chase-mussleman"  # replace with your S3 bucket
+    key            = "terraform.tfstate"
+    region         = "us-east-2"                    # replace with your region
+    dynamodb_table = "plex-server-locks"            # replace with your DynamoDB table
+    encrypt        = true
   }
 }
 
 provider "aws" {
   region     = var.region
-  # access_key = var.aws_access_key
-  # secret_key = var.aws_secret_key
-
+  
   # Apply global tags to all resources
   default_tags {
     tags = var.global_tags
