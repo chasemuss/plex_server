@@ -6,7 +6,6 @@ resource "aws_eip" "plex_eip" {
   tags = merge(var.global_tags, {
     Name = "plex-static-ip"
   })
-
 }
 
 output "plex_eip" {
