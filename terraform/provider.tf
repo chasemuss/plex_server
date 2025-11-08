@@ -5,7 +5,7 @@ terraform {
   backend "s3" {
     bucket         = "chase-mussleman"  # replace with your S3 bucket
     key            = "terraform.tfstate"
-    region         = var.region
+    region         = "us-west-2"
     dynamodb_table = "plex-server-locks"            # replace with your DynamoDB table
     encrypt        = true
   }
