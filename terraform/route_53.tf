@@ -19,6 +19,3 @@ resource "aws_route53_record" "plex" {
   }
 }
 
-output "plex_url" {
-  value = "http://plex.strongman-software.com:32400/web"
-}

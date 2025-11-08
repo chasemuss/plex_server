@@ -4,7 +4,7 @@ output "plex_public_ip" {
 }
 
 output "plex_url" {
-  value = "http://${aws_instance.plex.public_ip}:32400/web"
+  value = "http://plex.strongman-software.com:32400/web"
 }
 
 output "s3_media_prefix" {
